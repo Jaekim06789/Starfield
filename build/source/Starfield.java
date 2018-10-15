@@ -15,15 +15,17 @@ import java.io.IOException;
 public class Starfield extends PApplet {
 
 //your code here
-NormalParticle [] field;
+Particle [] field;
 public void setup()
 {
 	//your code here
 	
-	field = new NormalParticle[130];
+	field = new Particle[130];
 	for(int i = 0; i < field.length; i++){
 		field[i] = new NormalParticle();
 	}
+	field[0] = new OddballParticle();
+	field[1] = new JumboParticle();
 }
 public void draw()
 {
@@ -34,7 +36,7 @@ public void draw()
 		field[i].show();
 	}
 }
-class NormalParticle
+class NormalParticle implements Particle
 {
 	//your code here
 	double myX, myY, myAngle, mySpeed, speedX, speedY;
@@ -76,24 +78,34 @@ class NormalParticle
 interface Particle
 {
 	//your code here
-
-	
+	public void move();
+	public void show();
 }
-class OddballParticle //uses an interface
+class OddballParticle implements Particle//uses an interface
 {
 	//your code here
-	// double oddX, oddY, oddAngle, oddSpeed, oddSX, oddSY;
-	// int oddTime;
-	// void move(){
-
-	// }
-	// void show(){
-
-	// }
+	double oddX, oddY, oddAngle, oddSpeed, oddSX, oddSY;
+	int oddTime;
+	public void move(){
+		oddX = oddX + ((Math.random()*9)+1);
+		oddY = oddY + ((Math.random()*9)+1);
+	}
+	public void show(){
+		rect((float)oddX,(float)oddY,(float)oddSX,(float)oddSY);
+	}
+	public OddballParticle(){
+		oddX = 0;
+		oddY = 0;
+		oddSX = 25;
+		oddSY = 25;
+	}
 }
-class JumboParticle //uses inheritance
+class JumboParticle extends NormalParticle//uses inheritance
 {
 	//your code here
+	public void show(){
+		ellipse((float)myX, (float)myY, radX + 30, radY + 30);
+	}
 }
   public void settings() { 	size(500,500); }
   static public void main(String[] passedArgs) {
